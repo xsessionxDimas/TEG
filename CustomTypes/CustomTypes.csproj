@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F18BBC30-6131-4884-8FBC-97A288D44559}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CustomTypes</RootNamespace>
+    <AssemblyName>CustomTypes</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessObject\CRUDLogObject.cs" />
+    <Compile Include="BusinessObject\Notification.cs" />
+    <Compile Include="ApplicationObject\UserProfile.cs" />
+    <Compile Include="Attributes\DBRelatedAttributes.cs" />
+    <Compile Include="BusinessObject\AdjustmentBase.cs" />
+    <Compile Include="BusinessObject\Bank.cs" />
+    <Compile Include="BusinessObject\BankAccount.cs" />
+    <Compile Include="BusinessObject\BaseEntityObject.cs" />
+    <Compile Include="BusinessObject\Cash.cs" />
+    <Compile Include="BusinessObject\PublicIP.cs" />
+    <Compile Include="BusinessObject\ReportParam.cs" />
+    <Compile Include="BusinessObject\Company.cs" />
+    <Compile Include="BusinessObject\CashAdjustment.cs" />
+    <Compile Include="BusinessObject\CashBankAdjustment.cs" />
+    <Compile Include="BusinessObject\Production.cs" />
+    <Compile Include="BusinessObject\Customer.cs" />
+    <Compile Include="BusinessObject\DepositSales.cs" />
+    <Compile Include="BusinessObject\Expense.cs" />
+    <Compile Include="BusinessObject\Income.cs" />
+    <Compile Include="BusinessObject\Marketing.cs" />
+    <Compile Include="BusinessObject\Departement.cs" />
+    <Compile Include="BusinessObject\Product.cs" />
+    <Compile Include="BusinessObject\ProductCategory.cs" />
+    <Compile Include="BusinessObject\ProductStock.cs" />
+    <Compile Include="BusinessObject\ProductUnit.cs" />
+    <Compile Include="BusinessObject\ProformaInvoice.cs" />
+    <Compile Include="BusinessObject\PurchaseOrder.cs" />
+    <Compile Include="BusinessObject\Repackage.cs" />
+    <Compile Include="BusinessObject\RequestOrder.cs" />
+    <Compile Include="BusinessObject\SalesCredit.cs" />
+    <Compile Include="BusinessObject\SalesInvoice.cs" />
+    <Compile Include="BusinessObject\StockAdjustment.cs" />
+    <Compile Include="BusinessObject\Supplier.cs" />
+    <Compile Include="Exceptions\CustomExceptions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
