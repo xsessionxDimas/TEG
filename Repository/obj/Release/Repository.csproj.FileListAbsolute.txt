@@ -1,7 +1,0 @@
-C:\Users\xsessionx\Dropbox\TamanEden\Repository\bin\Release\Repository.dll
-C:\Users\xsessionx\Dropbox\TamanEden\Repository\bin\Release\Repository.pdb
-C:\Users\xsessionx\Dropbox\TamanEden\Repository\bin\Release\CustomTypes.dll
-C:\Users\xsessionx\Dropbox\TamanEden\Repository\bin\Release\CustomTypes.pdb
-C:\Users\xsessionx\Dropbox\TamanEden\Repository\obj\Release\Repository.csprojResolveAssemblyReference.cache
-C:\Users\xsessionx\Dropbox\TamanEden\Repository\obj\Release\Repository.dll
-C:\Users\xsessionx\Dropbox\TamanEden\Repository\obj\Release\Repository.pdb

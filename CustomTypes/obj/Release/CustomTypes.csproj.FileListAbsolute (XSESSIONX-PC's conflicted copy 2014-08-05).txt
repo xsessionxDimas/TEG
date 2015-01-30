@@ -1,4 +1,0 @@
-C:\Users\XSESSIONX\Dropbox\TamanEden\CustomTypes\bin\Release\CustomTypes.dll
-C:\Users\XSESSIONX\Dropbox\TamanEden\CustomTypes\bin\Release\CustomTypes.pdb
-C:\Users\XSESSIONX\Dropbox\TamanEden\CustomTypes\obj\Release\CustomTypes.dll
-C:\Users\XSESSIONX\Dropbox\TamanEden\CustomTypes\obj\Release\CustomTypes.pdb
