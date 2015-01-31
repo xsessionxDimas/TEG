@@ -18,9 +18,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_MARKETING");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_MARKETING") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -36,9 +36,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_MARKETING");
+                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_MARKETING") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_MARKETING");
-                        cmd.Parameters.AddWithValue("@MarketingId", id);
-                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_MARKETING") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@MarketingId", id);
+                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -76,7 +76,7 @@ namespace Repository
             var result     = new List<Marketing>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_MARKETING");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_MARKETING") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -97,8 +97,8 @@ namespace Repository
             var _marketing = new Marketing();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_MARKETING_BY_ID");
-                cmd.Parameters.AddWithValue("@MarketingId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_MARKETING_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@MarketingId", id);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -116,7 +116,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_MARKETING_NAME_AVAILABLE");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_MARKETING_NAME_AVAILABLE") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -132,7 +132,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_MARKETING_NAME_AVAILABLE2");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_MARKETING_NAME_AVAILABLE2") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

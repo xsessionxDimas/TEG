@@ -19,9 +19,9 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_STOCK_ADJUSTMENT");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_STOCK_ADJUSTMENT") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -37,9 +37,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_STOCK_ADJUSTMENT");
+                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_STOCK_ADJUSTMENT") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -57,9 +57,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_STOCK_ADJUSTMENT");
-                        cmd.Parameters.AddWithValue("@StockAdjustmentId", id);
-                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_STOCK_ADJUSTMENT") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@StockAdjustmentId", id);
+                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -78,16 +78,16 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_STOCKFLOW");
-                cmd.Parameters.AddWithValue("@DepartementId", obj.DepartementID);
-                cmd.Parameters.AddWithValue("@ProductId", obj.ProductID);
-                cmd.Parameters.AddWithValue("@Description", obj.Description);
-                cmd.Parameters.AddWithValue("@AdjustmentVoucher", obj.AdjustmentVoucher);
-                cmd.Parameters.AddWithValue("@Deposit", obj.Deposit);
-                cmd.Parameters.AddWithValue("@Withdraw", obj.Withdraw);
-                cmd.Parameters.AddWithValue("@Note", obj.Note);
-                cmd.Parameters.AddWithValue("@CreatedBy", obj.CreatedBy);
-                cmd.Parameters.AddWithValue("@CreatedDate", obj.CreatedDate);
+                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_STOCKFLOW") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", obj.DepartementID);
+                DBClass.AddSimpleParameter(cmd, "@ProductId", obj.ProductID);
+                DBClass.AddSimpleParameter(cmd, "@Description", obj.Description);
+                DBClass.AddSimpleParameter(cmd, "@AdjustmentVoucher", obj.AdjustmentVoucher);
+                DBClass.AddSimpleParameter(cmd, "@Deposit", obj.Deposit);
+                DBClass.AddSimpleParameter(cmd, "@Withdraw", obj.Withdraw);
+                DBClass.AddSimpleParameter(cmd, "@Note", obj.Note);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", obj.CreatedBy);
+                DBClass.AddSimpleParameter(cmd, "@CreatedDate", obj.CreatedDate);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -108,10 +108,10 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_STOCKFLOW");
-                        cmd.Parameters.AddWithValue("@ProductId", obj.ProductID);
-                        cmd.Parameters.AddWithValue("@DepartementId", obj.DepartementID);
-                        cmd.Parameters.AddWithValue("@AdjustmentVoucher", obj.AdjustmentVoucher);
+                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_STOCKFLOW") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@ProductId", obj.ProductID);
+                        DBClass.AddSimpleParameter(cmd, "@DepartementId", obj.DepartementID);
+                        DBClass.AddSimpleParameter(cmd, "@AdjustmentVoucher", obj.AdjustmentVoucher);
                         var affectedRows = DBClass.ExecuteNonQuery(cmd, txn);
                         if (affectedRows == 0)
                             throw new Exception("Hapus log gagal");
@@ -131,7 +131,7 @@ namespace Repository
             var result     = new List<StockAdjustment>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd  = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_ADJUSTMENT");
+                var cmd  = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_ADJUSTMENT") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader      = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -158,8 +158,8 @@ namespace Repository
             var stockAdjustment = new StockAdjustment();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_STOCK_ADJUSTEMENT_BY_ID");
-                cmd.Parameters.AddWithValue("@StockAdjustmentId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_STOCK_ADJUSTEMENT_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@StockAdjustmentId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -187,12 +187,12 @@ namespace Repository
             DataSet[] dataSetArray = new DataSet[1];
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_STOCK_ADJUSTMENT_DATA");
-                cmd.Parameters.AddWithValue("@AdjustmentId", adjustmentId);
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                DataSet dataSetResult  = new DataSet();
+                var cmd           = DBClass.GetStoredProcedureCommand("REPORT_GET_STOCK_ADJUSTMENT_DATA") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@AdjustmentId", adjustmentId);
+                var adapter       = new SqlDataAdapter(cmd);
+                var dataSetResult = new DataSet();
                 adapter.Fill(dataSetResult, "Adjustment");
-                dataSetArray[0]        = dataSetResult;
+                dataSetArray[0]   = dataSetResult;
             }
             return dataSetArray;
         }
@@ -202,7 +202,7 @@ namespace Repository
             string VoucherCode = "ADJS/" + DateTime.Now.Year + "/" + StringManipulation.ChangeToRomeNumber(DateTime.Now.Month) + "/";
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("GETSTOCKADJUSTMENTCODENUMBER");
+                var cmd = DBClass.GetStoredProcedureCommand("GETSTOCKADJUSTMENTCODENUMBER") as SqlCommand;
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {

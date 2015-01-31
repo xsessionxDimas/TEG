@@ -17,9 +17,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_CASH");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_CASH") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -44,7 +44,7 @@ namespace Repository
             var result      = new List<Cash>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_CASH");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_CASH") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -64,8 +64,8 @@ namespace Repository
             var cash       = new Cash();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPARTEMENT_CASH");
-                cmd.Parameters.AddWithValue("@DepartementId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPARTEMENT_CASH") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -80,7 +80,7 @@ namespace Repository
             var result      = false;
             using (DBClass  = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("APP_CASH_AVAILABLE");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_CASH_AVAILABLE") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader  = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

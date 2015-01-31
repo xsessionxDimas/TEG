@@ -14,11 +14,11 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_HEADER");
-                cmd.Parameters.AddWithValue("@DepartementId", departementId);
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
-                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_HEADER") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
+                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "ProductionHeader");
@@ -26,10 +26,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_ITEMS");
-                cmd.Parameters.AddWithValue("@DepartementId", departementId);
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_ITEMS") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "ProductionDetail");
@@ -44,11 +44,11 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_HEADER");
-                cmd.Parameters.AddWithValue("@DepartementId", departementId);
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
-                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_HEADER") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
+                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "ProductionHeader");
@@ -56,10 +56,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_SUPPLIES_USING_ITEMS");
-                cmd.Parameters.AddWithValue("@DepartementId", departementId);
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_SUPPLIES_USING_ITEMS") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "ProductionDetail");
@@ -73,11 +73,11 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass        = new MSSQLDatabase())
             {
-                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_HEADER_EXCELL");
-                cmd.Parameters.AddWithValue("@DepartementId", departementId);
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
-                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_HEADER_EXCELL") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
+                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -85,10 +85,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_EXCELL");
-                cmd.Parameters.AddWithValue("@DepartementId", departementId);
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_EXCELL") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -99,8 +99,8 @@ namespace Repository
             {
                 using (DBClass = new MSSQLDatabase())
                 {
-                    SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_ITEMS_EXCELL");
-                    cmd.Parameters.AddWithValue("@ProductionId", dataRow[0]);
+                    var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCTION_ITEMS_EXCELL") as SqlCommand;
+                    DBClass.AddSimpleParameter(cmd, "@ProductionId", dataRow[0]);
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     var table              = new DataTable {TableName = "PRODUCTION-" + dataRow[0]};
                     adapter.Fill(table);

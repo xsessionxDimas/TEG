@@ -21,9 +21,9 @@ namespace Repository
             {
                 try
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PROFORMA");
+                    var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PROFORMA") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                    cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                    DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                     var reader = DBClass.ExecuteReader(cmd);
                     while (reader.Read())
                     {
@@ -57,11 +57,11 @@ namespace Repository
             var result     = default(int);
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PROFORMA_PRICE");
-                cmd.Parameters.AddWithValue("@Shipping",   proforma.Shipping);
-                cmd.Parameters.AddWithValue("@Discount",   proforma.Discount);
-                cmd.Parameters.AddWithValue("@GrandTotal", proforma.GrandTotal);
-                cmd.Parameters.AddWithValue("@ProformaId", proforma.ProformaID);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PROFORMA_PRICE") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@Shipping",   proforma.Shipping);
+                DBClass.AddSimpleParameter(cmd, "@Discount",   proforma.Discount);
+                DBClass.AddSimpleParameter(cmd, "@GrandTotal", proforma.GrandTotal);
+                DBClass.AddSimpleParameter(cmd, "@ProformaId", proforma.ProformaID);
                 DBClass.ExecuteNonQuery(cmd);
                 DeleteItemAndPresent(proforma.ProformaID);
                 var listItems = proforma.Items;
@@ -96,8 +96,8 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PROFORMA_SALES");
-                        cmd.Parameters.AddWithValue("@ProformaId", id);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PROFORMA_SALES") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@ProformaId", id);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -119,12 +119,12 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PROFORMA_ITEM");
-                        cmd.Parameters.AddWithValue("@ProformaId", id);
-                        cmd.Parameters.AddWithValue("@ProductId", item.ProductID);
-                        cmd.Parameters.AddWithValue("@Qty", item.Qty);
-                        cmd.Parameters.AddWithValue("@Price", item.Price);
-                        cmd.Parameters.AddWithValue("@SubTotal", item.SubTotal);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PROFORMA_ITEM") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@ProformaId", id);
+                        DBClass.AddSimpleParameter(cmd, "@ProductId", item.ProductID);
+                        DBClass.AddSimpleParameter(cmd, "@Qty", item.Qty);
+                        DBClass.AddSimpleParameter(cmd, "@Price", item.Price);
+                        DBClass.AddSimpleParameter(cmd, "@SubTotal", item.SubTotal);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -145,10 +145,10 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PROFORMA_PRESENT");
-                        cmd.Parameters.AddWithValue("@ProformaId", id);
-                        cmd.Parameters.AddWithValue("@ProductId", item.ProductID);
-                        cmd.Parameters.AddWithValue("@Qty", item.Qty);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PROFORMA_PRESENT") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@ProformaId", id);
+                        DBClass.AddSimpleParameter(cmd, "@ProductId", item.ProductID);
+                        DBClass.AddSimpleParameter(cmd, "@Qty", item.Qty);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -169,8 +169,8 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PROFORMA_SALES_ITEM_AND_PRESENT");
-                        cmd.Parameters.AddWithValue("@ProformaId", id);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PROFORMA_SALES_ITEM_AND_PRESENT") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@ProformaId", id);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -188,7 +188,7 @@ namespace Repository
             var result     = new List<ProformaInvoice>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PROFORMA_INVOICE");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PROFORMA_INVOICE") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -215,8 +215,8 @@ namespace Repository
             var result     = new List<Items>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PROFORMA_ITEM_AND_PRESENT");
-                cmd.Parameters.AddWithValue("@ProformaId", proformaID);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PROFORMA_ITEM_AND_PRESENT") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@ProformaId", proformaID);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -241,8 +241,8 @@ namespace Repository
             var proforma   = new ProformaInvoice();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PROFORMA_INVOICE_BY_ID");
-                cmd.Parameters.AddWithValue("@ProformaId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PROFORMA_INVOICE_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@ProformaId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -267,8 +267,8 @@ namespace Repository
             var proforma   = new ProformaInvoice();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_FULL_PROFORMA_INVOICE_BY_ID");
-                cmd.Parameters.AddWithValue("@ProformaId", proformaId);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_FULL_PROFORMA_INVOICE_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@ProformaId", proformaId);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -297,9 +297,9 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PROFORMA_INVOICE_DATA");
-                cmd.Parameters.AddWithValue("@ProformaInvoiceId", proformaId);
-                cmd.Parameters.AddWithValue("@InWord", inWord);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PROFORMA_INVOICE_DATA") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@ProformaInvoiceId", proformaId);
+                DBClass.AddSimpleParameter(cmd, "@InWord", inWord);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "InvoiceReport");
@@ -307,8 +307,8 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PROFORMA_INVOICE_ITEM_AND_PRESENT_DATA");
-                cmd.Parameters.AddWithValue("@ProformaInvoiceId", proformaId);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PROFORMA_INVOICE_ITEM_AND_PRESENT_DATA") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@ProformaInvoiceId", proformaId);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "InvoiceReportDetail");
@@ -322,7 +322,7 @@ namespace Repository
             string ProformaCode = "PRO/" + DateTime.Now.Year + "/" + StringManipulation.ChangeToRomeNumber(DateTime.Now.Month) + "/";
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("GETPROFORMACODENUMBER");
+                var cmd = DBClass.GetStoredProcedureCommand("GETPROFORMACODENUMBER") as SqlCommand;
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
