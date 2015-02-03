@@ -30,10 +30,10 @@ namespace Repository
             var result = new List<UserProfile>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("aspnet_Membership_GetAllUsers");
-                cmd.Parameters.AddWithValue("@ApplicationName", "/");
-                cmd.Parameters.AddWithValue("@PageIndex", 0);
-                cmd.Parameters.AddWithValue("@PageSize", 25);
+                var cmd = DBClass.GetStoredProcedureCommand("aspnet_Membership_GetAllUsers") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@ApplicationName", "/");
+                DBClass.AddSimpleParameter(cmd, "@PageIndex", 0);
+                DBClass.AddSimpleParameter(cmd, "@PageSize", 25);
                 DbDataReader reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -55,8 +55,8 @@ namespace Repository
                 {
                     using (var txn = DBClass.BeginTransaction())
                     {
-                        SqlCommand cmd = DBClass.GetStoredProcedureCommand("LockUser");
-                        cmd.Parameters.AddWithValue("@Username", userName);
+                        var cmd = DBClass.GetStoredProcedureCommand("LockUser") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@Username", userName);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }

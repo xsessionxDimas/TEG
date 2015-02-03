@@ -18,10 +18,10 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_BANK_ACCOUNT");
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_BANK_ACCOUNT") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
-                var reader     = DBClass.ExecuteReader(cmd);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
                     objID = int.Parse(reader[0].ToString());
@@ -36,9 +36,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_BANK_ACCOUNT");
+                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_BANK_ACCOUNT") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_BANK_ACCOUNT");
-                        cmd.Parameters.AddWithValue("@BankAccountId", id);
-                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_BANK_ACCOUNT") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@BankAccountId", id);
+                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -73,12 +73,12 @@ namespace Repository
 
         public IEnumerable<T> FindAll(List<Dictionary<string, object>> keyValueParam)
         {
-            var result      = new List<BankAccount>();
+            var result     = new List<BankAccount>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_BANK_ACCOUNT");
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_GET_ALL_BANK_ACCOUNT") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
-                var reader     = DBClass.ExecuteReader(cmd);
+                var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
                     var bankAccount = new BankAccount();
@@ -101,9 +101,9 @@ namespace Repository
             var bankAccount = new BankAccount();
             using (DBClass  = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_BANK_ACCOUNT");
-                cmd.Parameters.AddWithValue("@BankAccountId", id);
-                var reader = DBClass.ExecuteReader(cmd);
+                var cmd     = DBClass.GetStoredProcedureCommand("APP_GET_BANK_ACCOUNT") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@BankAccountId", id);
+                var reader  = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
                     bankAccount.BankAccountID   = int.Parse(reader[0].ToString());
@@ -124,7 +124,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("APP_BANK_ACCOUNT_AVAILABLE");
+                var cmd     = DBClass.GetStoredProcedureCommand("APP_BANK_ACCOUNT_AVAILABLE") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader  = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

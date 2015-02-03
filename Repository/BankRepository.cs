@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.SqlClient;
-using CustomTypes.Base;
 using CustomTypes.Objects;
 using Repository.DBClass;
 using Repository.Enums;
@@ -11,34 +10,34 @@ using Repository.tools;
 
 namespace Repository
 {
-    public class BankRepository<T> : RepositoryBase, IUniqueValidation, IRepository<T> where T : BaseEntityObject
+    public class BankRepository : RepositoryBase, IUniqueValidation, IRepository<Bank>
     {
-        public int SaveRow(T param, string createdBy)
+        public int SaveRow(Bank param, string createdBy)
         {
-            int objID      = 0;
+            int objId      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_BANK");
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_BANK") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
-                var reader     = DBClass.ExecuteReader(cmd);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
-                    objID = int.Parse(reader[0].ToString());
+                    objId = int.Parse(reader[0].ToString());
                 }
             }
-            return objID;
+            return objId;
         }
 
-        public int UpdateRow(T param, string updatedBy)
+        public int UpdateRow(Bank param, string updatedBy)
         {
             using (DBClass = new MSSQLDatabase())
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_BANK");
+                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_BANK") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +55,9 @@ namespace Repository
                 {
                     using (DbTransaction txn = DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_BANK");
-                        cmd.Parameters.AddWithValue("@BankId", id);
-                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_BANK") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@BankId", id);
+                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -71,12 +70,12 @@ namespace Repository
             return result;
         }
 
-        public IEnumerable<T> FindAll(List<Dictionary<string, object>> keyValueParam)
+        public IEnumerable<Bank> FindAll(List<Dictionary<string, object>> keyValueParam)
         {
             var result     = new List<Bank>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_BANK");
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_GET_ALL_BANK") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -87,16 +86,16 @@ namespace Repository
                     result.Add(bank);
                 }
             }
-            return result as List<T>;
+            return result;
         }
 
-        public T FindbyId(int id)
+        public Bank FindbyId(int id)
         {
-            var bank = new Bank();
+            var bank       = new Bank();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_BANK_BY_ID");
-                cmd.Parameters.AddWithValue("@BankId", id);
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_GET_BANK_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@BankId", id);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -104,7 +103,7 @@ namespace Repository
                     bank.BankName = reader[1].ToString();
                 }
             }
-            return bank as T;
+            return bank;
         }
 
         public bool UniqueNameAvailable(List<Dictionary<string, object>> keyValueParam)
@@ -112,7 +111,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_BANK_NAME_AVAILABLE");
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_BANK_NAME_AVAILABLE") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -128,7 +127,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd   = DBClass.GetStoredProcedureCommand("APP_BANK_NAME_AVAILABLE2");
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_BANK_NAME_AVAILABLE2") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

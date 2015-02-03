@@ -21,9 +21,9 @@ namespace Repository
             {
                 try
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PURCHASE_ORDER");
+                    var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PURCHASE_ORDER") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                    cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                    DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                     var reader = DBClass.ExecuteReader(cmd);
                     while (reader.Read())
                     {
@@ -52,12 +52,12 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PURCHASE_ORDER_ITEM");
-                        cmd.Parameters.AddWithValue("@PurchaseOrderId", id);
-                        cmd.Parameters.AddWithValue("@ProductId", item.ProductID);
-                        cmd.Parameters.AddWithValue("@Qty", item.Qty);
-                        cmd.Parameters.AddWithValue("@EstimatedDate", item.EstimatedDate);
-                        cmd.Parameters.AddWithValue("@DeliveredStatus", 1);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PURCHASE_ORDER_ITEM") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", id);
+                        DBClass.AddSimpleParameter(cmd, "@ProductId", item.ProductID);
+                        DBClass.AddSimpleParameter(cmd, "@Qty", item.Qty);
+                        DBClass.AddSimpleParameter(cmd, "@EstimatedDate", item.EstimatedDate);
+                        DBClass.AddSimpleParameter(cmd, "@DeliveredStatus", 1);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -76,16 +76,16 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_STOCKFLOW");
-                cmd.Parameters.AddWithValue("@DepartementId", obj.DepartementID);
-                cmd.Parameters.AddWithValue("@ProductId", obj.ProductID);
-                cmd.Parameters.AddWithValue("@Description", obj.Description);
-                cmd.Parameters.AddWithValue("@PurchaseVoucher", obj.PurchaseVoucher);
-                cmd.Parameters.AddWithValue("@Deposit", obj.Deposit);
-                cmd.Parameters.AddWithValue("@Withdraw", obj.Withdraw);
-                cmd.Parameters.AddWithValue("@Note", obj.Note);
-                cmd.Parameters.AddWithValue("@CreatedBy", obj.CreatedBy);
-                cmd.Parameters.AddWithValue("@CreatedDate", obj.CreatedDate);
+                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_STOCKFLOW") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", obj.DepartementID);
+                DBClass.AddSimpleParameter(cmd, "@ProductId", obj.ProductID);
+                DBClass.AddSimpleParameter(cmd, "@Description", obj.Description);
+                DBClass.AddSimpleParameter(cmd, "@PurchaseVoucher", obj.PurchaseVoucher);
+                DBClass.AddSimpleParameter(cmd, "@Deposit", obj.Deposit);
+                DBClass.AddSimpleParameter(cmd, "@Withdraw", obj.Withdraw);
+                DBClass.AddSimpleParameter(cmd, "@Note", obj.Note);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", obj.CreatedBy);
+                DBClass.AddSimpleParameter(cmd, "@CreatedDate", obj.CreatedDate);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -104,11 +104,11 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_STOCKFLOW_PO");
-                        cmd.Parameters.AddWithValue("@ProductId", obj.ProductID);
-                        cmd.Parameters.AddWithValue("@DepartementId", obj.DepartementID);
-                        cmd.Parameters.AddWithValue("@PurchaseVoucher", obj.PurchaseVoucher);
-                        cmd.Parameters.AddWithValue("@CreatedDate", obj.CreatedDate);
+                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_STOCKFLOW_PO") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@ProductId", obj.ProductID);
+                        DBClass.AddSimpleParameter(cmd, "@DepartementId", obj.DepartementID);
+                        DBClass.AddSimpleParameter(cmd, "@PurchaseVoucher", obj.PurchaseVoucher);
+                        DBClass.AddSimpleParameter(cmd, "@CreatedDate", obj.CreatedDate);
                         var affectedRows = DBClass.ExecuteNonQuery(cmd, txn);
                         if (affectedRows == 0)
                             throw new Exception("Hapus log gagal");
@@ -128,13 +128,13 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PURCHASE_ORDER_ITEM_IN");
-                cmd.Parameters.AddWithValue("@PurchaseOrderId", item.PurchaseOrderID);
-                cmd.Parameters.AddWithValue("@ProductId", item.ProductID);
-                cmd.Parameters.AddWithValue("@Qty", item.Qty);
-                cmd.Parameters.AddWithValue("@DeliveredDate", item.DeliveredDate);
-                cmd.Parameters.AddWithValue("@Note", item.Note);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PURCHASE_ORDER_ITEM_IN") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", item.PurchaseOrderID);
+                DBClass.AddSimpleParameter(cmd, "@ProductId", item.ProductID);
+                DBClass.AddSimpleParameter(cmd, "@Qty", item.Qty);
+                DBClass.AddSimpleParameter(cmd, "@DeliveredDate", item.DeliveredDate);
+                DBClass.AddSimpleParameter(cmd, "@Note", item.Note);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -150,13 +150,13 @@ namespace Repository
             var result        = default(int);
             using (DBClass    = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PURCHASE_ORDER");
-                cmd.Parameters.AddWithValue("@DepartementId", purchaseOrder.DepartementID);
-                cmd.Parameters.AddWithValue("@SupplierId", purchaseOrder.SupplierID);
-                cmd.Parameters.AddWithValue("@PurchaseDate", purchaseOrder.PurchaseDate);
-                cmd.Parameters.AddWithValue("@Note", purchaseOrder.Note);
-                cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
-                cmd.Parameters.AddWithValue("@PurchaseOrderId", purchaseOrder.PurchaseOrderID);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PURCHASE_ORDER") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DepartementId", purchaseOrder.DepartementID);
+                DBClass.AddSimpleParameter(cmd, "@SupplierId", purchaseOrder.SupplierID);
+                DBClass.AddSimpleParameter(cmd, "@PurchaseDate", purchaseOrder.PurchaseDate);
+                DBClass.AddSimpleParameter(cmd, "@Note", purchaseOrder.Note);
+                DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", purchaseOrder.PurchaseOrderID);
                 try
                 {
                     DBClass.ExecuteNonQuery(cmd);
@@ -183,9 +183,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction) DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PURCHASE_ORDER");
-                        cmd.Parameters.AddWithValue("@PurchaseOrderId", id);
-                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PURCHASE_ORDER") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", id);
+                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -207,8 +207,8 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction) DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PURCHASE_ORDER_ITEM_IN");
-                        cmd.Parameters.AddWithValue("@PurchaseOrderInId", purchaseOrderInId);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PURCHASE_ORDER_ITEM_IN") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@PurchaseOrderInId", purchaseOrderInId);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -226,7 +226,7 @@ namespace Repository
             var result     = new List<PurchaseOrder>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PURCHASE_ORDER");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PURCHASE_ORDER") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -249,7 +249,7 @@ namespace Repository
             var result     = new List<PurchaseOrder>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd  = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PURCHASE_ORDER_DASHBOARD");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PURCHASE_ORDER_DASHBOARD") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader      = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -275,8 +275,8 @@ namespace Repository
             var result     = new List<PurchasedItem>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_ITEM");
-                cmd.Parameters.AddWithValue("@PurchaseOrderId", purchaseOrderId);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_ITEM") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", purchaseOrderId);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -304,9 +304,9 @@ namespace Repository
             var result     = new List<PurchasedItem>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_ITEM_IN");
-                cmd.Parameters.AddWithValue("@PurchaseOrderId", purchaseOrderId);
-                cmd.Parameters.AddWithValue("@ProductId", productID);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_ITEM_IN") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", purchaseOrderId);
+                DBClass.AddSimpleParameter(cmd, "@ProductId", productID);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -328,8 +328,8 @@ namespace Repository
             var item = new PurchasedItem();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_ITEM_IN_BY_ID");
-                cmd.Parameters.AddWithValue("@PurchaseOrderInId", purchaseOrderInId);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_ITEM_IN_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderInId", purchaseOrderInId);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -350,8 +350,8 @@ namespace Repository
             var purchaseOrder  = new PurchaseOrder();
             using (DBClass     = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_BY_ID");
-                cmd.Parameters.AddWithValue("@PurchaseOrderId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PURCHASE_ORDER_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -373,8 +373,8 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PURCHASE_ORDER_DATA");
-                cmd.Parameters.AddWithValue("@PurchaseOrderId", proformaId);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PURCHASE_ORDER_DATA") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", proformaId);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "PurchaseOrder");
@@ -382,8 +382,8 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PURCHASE_ORDER_ITEM");
-                cmd.Parameters.AddWithValue("@PurchaseOrderId", proformaId);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PURCHASE_ORDER_ITEM") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@PurchaseOrderId", proformaId);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "PurchaseOrderItem");
@@ -397,7 +397,7 @@ namespace Repository
             string ProformaCode = "PO/" + departementId + "/" + DateTime.Now.Year + "/" + StringManipulation.ChangeToRomeNumber(DateTime.Now.Month) + "/";
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("GETPURCHASEORDERCODENUMBER");
+                var cmd = DBClass.GetStoredProcedureCommand("GETPURCHASEORDERCODENUMBER") as SqlCommand;
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {

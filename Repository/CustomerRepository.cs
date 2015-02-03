@@ -18,9 +18,9 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("dbo.APP_SAVE_NEW_CUSTOMER");
+                var cmd = DBClass.GetStoredProcedureCommand("dbo.APP_SAVE_NEW_CUSTOMER") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                 var reader = DBClass.ExecuteReader(cmd);
                 while(reader.Read())
                 {
@@ -36,9 +36,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("dbo.APP_UPDATE_CUSTOMER");
+                    var cmd = DBClass.GetStoredProcedureCommand("dbo.APP_UPDATE_CUSTOMER") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("dbo.APP_DELETE_CUSTOMER");
-                        cmd.Parameters.AddWithValue("@CustomerId", id);
-                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("dbo.APP_DELETE_CUSTOMER") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@CustomerId", id);
+                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -77,7 +77,7 @@ namespace Repository
             var result     = new List<Customer>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_CUSTOMER");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_CUSTOMER") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -104,8 +104,8 @@ namespace Repository
             Customer customer = null;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_CUSTOMER_BY_ID");
-                cmd.Parameters.AddWithValue("@CustomerId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_CUSTOMER_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@CustomerId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -133,8 +133,8 @@ namespace Repository
             Customer customer = null;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_CUSTOMER_BY_NAME");
-                cmd.Parameters.AddWithValue("@Name", name);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_CUSTOMER_BY_NAME") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@Name", name);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -160,7 +160,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_NAME_AVAILABLE");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_NAME_AVAILABLE") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -176,7 +176,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_NAME_AVAILABLE2");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_NAME_AVAILABLE2") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -192,8 +192,8 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_NAME_AVAILABLE3");
-                cmd.Parameters.AddWithValue("@Fullname", fullName);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_NAME_AVAILABLE3") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@Fullname", fullName);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -208,8 +208,8 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_CAN_CREDIT");
-                cmd.Parameters.AddWithValue("@CustomerId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_CAN_CREDIT") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@CustomerId", id);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -224,8 +224,8 @@ namespace Repository
             decimal result = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_CREDIT_LIMIT");
-                cmd.Parameters.AddWithValue("@CustomerId", id);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_CUSTOMER_CREDIT_LIMIT") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@CustomerId", id);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -240,7 +240,7 @@ namespace Repository
             var result     = new List<Customer>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_CUSTOMER_LIMITCREDIT_PASS_ALERT");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_CUSTOMER_LIMITCREDIT_PASS_ALERT") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

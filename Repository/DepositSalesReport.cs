@@ -14,10 +14,10 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_DEPOSIT_SALES_HISTORY_HEADER");
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
-                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_DEPOSIT_SALES_HISTORY_HEADER") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
+                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "DepositSalesHistoryHeader");
@@ -25,9 +25,9 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_DEPOSIT_SALES_HISTORY");
-                cmd.Parameters.AddWithValue("@DateStart", startingDate);
-                cmd.Parameters.AddWithValue("@DateEnd", endDate);
+                var cmd = DBClass.GetStoredProcedureCommand("REPORT_DEPOSIT_SALES_HISTORY") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@DateStart", startingDate);
+                DBClass.AddSimpleParameter(cmd, "@DateEnd", endDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "DepositSalesHistory");

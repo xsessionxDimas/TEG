@@ -18,9 +18,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PUBLIC_IP");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PUBLIC_IP") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -36,9 +36,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PUBLIC_IP");
+                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PUBLIC_IP") as SqlCommand;
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (DbTransaction txn = DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_IP_PUBLIC");
-                        cmd.Parameters.AddWithValue("@PublicIPID", id);
-                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_IP_PUBLIC") as SqlCommand;
+                        DBClass.AddSimpleParameter(cmd, "@PublicIPID", id);
+                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -76,7 +76,7 @@ namespace Repository
             var result     = new List<PublicIP>();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PUBLIC_IP");
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PUBLIC_IP") as SqlCommand;
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -100,8 +100,8 @@ namespace Repository
             var publicIP = new PublicIP();
             using (DBClass = new MSSQLDatabase())
             {
-                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PUBLIC_IP_BY_ID");
-                cmd.Parameters.AddWithValue("@IpAddress", IpAddress);
+                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PUBLIC_IP_BY_ID") as SqlCommand;
+                DBClass.AddSimpleParameter(cmd, "@IpAddress", IpAddress);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
