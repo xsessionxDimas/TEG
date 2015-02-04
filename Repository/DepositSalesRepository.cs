@@ -19,9 +19,9 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_DEPOSIT_SALES_ACCOUNT") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_DEPOSIT_SALES_ACCOUNT");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -37,9 +37,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_DEPOSIT_SALES") as SqlCommand;
+                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_DEPOSIT_SALES");
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -57,9 +57,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_DEPOSIT_SALES") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@DepositSalesId", id);
-                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_DEPOSIT_SALES");
+                        cmd.Parameters.AddWithValue("@DepositSalesId", id);
+                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -77,7 +77,7 @@ namespace Repository
             var result     = new List<DepositSales>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPOSIT_SALES") as SqlCommand;
+                SqlCommand cmd  = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPOSIT_SALES");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader      = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -102,8 +102,8 @@ namespace Repository
             var depositSales = new DepositSales();
             using (DBClass   = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPOSIT_SALES_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepositSalesId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPOSIT_SALES_BY_ID");
+                cmd.Parameters.AddWithValue("@DepositSalesId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -132,9 +132,9 @@ namespace Repository
             var depositSales = new DepositSales();
             using (DBClass   = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPOSIT_SALES_BY_VOUCHER_CODE") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@VoucherCode", voucherCode);
-                DBClass.AddSimpleParameter(cmd, "@NominalToPaid", nominalToPaid);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPOSIT_SALES_BY_VOUCHER_CODE");
+                cmd.Parameters.AddWithValue("@VoucherCode", voucherCode);
+                cmd.Parameters.AddWithValue("@NominalToPaid", nominalToPaid);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -157,15 +157,15 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_CASHFLOW") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", logObject.DepartementID);
-                DBClass.AddSimpleParameter(cmd, "@Description", logObject.Description);
-                DBClass.AddSimpleParameter(cmd, "@DepositSalesVoucher", logObject.DepositSalesVoucher);
-                DBClass.AddSimpleParameter(cmd, "@Deposit", logObject.Deposit);
-                DBClass.AddSimpleParameter(cmd, "@Withdraw", logObject.Withdraw);
-                DBClass.AddSimpleParameter(cmd, "@Note", logObject.Note);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", logObject.CreatedBy);
-                DBClass.AddSimpleParameter(cmd, "@CreatedDate", logObject.CreatedDate);
+                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_CASHFLOW");
+                cmd.Parameters.AddWithValue("@DepartementId", logObject.DepartementID);
+                cmd.Parameters.AddWithValue("@Description", logObject.Description);
+                cmd.Parameters.AddWithValue("@DepositSalesVoucher", logObject.DepositSalesVoucher);
+                cmd.Parameters.AddWithValue("@Deposit", logObject.Deposit);
+                cmd.Parameters.AddWithValue("@Withdraw", logObject.Withdraw);
+                cmd.Parameters.AddWithValue("@Note", logObject.Note);
+                cmd.Parameters.AddWithValue("@CreatedBy", logObject.CreatedBy);
+                cmd.Parameters.AddWithValue("@CreatedDate", logObject.CreatedDate);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -185,9 +185,9 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_CASHFLOW") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@CashId", logObject.CashID);
-                        DBClass.AddSimpleParameter(cmd, "@DepositSalesVoucher", logObject.DepositSalesVoucher);
+                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_CASHFLOW");
+                        cmd.Parameters.AddWithValue("@CashId", logObject.CashID);
+                        cmd.Parameters.AddWithValue("@DepositSalesVoucher", logObject.DepositSalesVoucher);
                         var affectedRows = DBClass.ExecuteNonQuery(cmd, txn);
                         if (affectedRows == 0)
                             throw new Exception("Hapus log gagal");
@@ -207,15 +207,15 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_BANKFLOW") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@CashBankId", logObject.CashBankID);
-                DBClass.AddSimpleParameter(cmd, "@Description", logObject.Description);
-                DBClass.AddSimpleParameter(cmd, "@DepositSalesVoucher", logObject.DepositSalesVoucher);
-                DBClass.AddSimpleParameter(cmd, "@Deposit", logObject.Deposit);
-                DBClass.AddSimpleParameter(cmd, "@Withdraw", logObject.Withdraw);
-                DBClass.AddSimpleParameter(cmd, "@Note", logObject.Note);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", logObject.CreatedBy);
-                DBClass.AddSimpleParameter(cmd, "@CreatedDate", logObject.CreatedDate);
+                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_BANKFLOW");
+                cmd.Parameters.AddWithValue("@CashBankId", logObject.CashBankID);
+                cmd.Parameters.AddWithValue("@Description", logObject.Description);
+                cmd.Parameters.AddWithValue("@DepositSalesVoucher", logObject.DepositSalesVoucher);
+                cmd.Parameters.AddWithValue("@Deposit", logObject.Deposit);
+                cmd.Parameters.AddWithValue("@Withdraw", logObject.Withdraw);
+                cmd.Parameters.AddWithValue("@Note", logObject.Note);
+                cmd.Parameters.AddWithValue("@CreatedBy", logObject.CreatedBy);
+                cmd.Parameters.AddWithValue("@CreatedDate", logObject.CreatedDate);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -235,9 +235,9 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_BANKFLOW") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@CashBankId", logObject.CashBankID);
-                        DBClass.AddSimpleParameter(cmd, "@DepositSalesVoucher", logObject.DepositSalesVoucher);
+                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_BANKFLOW");
+                        cmd.Parameters.AddWithValue("@CashBankId", logObject.CashBankID);
+                        cmd.Parameters.AddWithValue("@DepositSalesVoucher", logObject.DepositSalesVoucher);
                         var affectedRows = DBClass.ExecuteNonQuery(cmd, txn);
                         if (affectedRows == 0)
                             throw new Exception("Hapus log gagal");
@@ -260,7 +260,7 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("PAID_WITH_DEPOSIT_SALES") as SqlCommand;
+                        SqlCommand cmd = DBClass.GetStoredProcedureCommand("PAID_WITH_DEPOSIT_SALES");
                         RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
@@ -300,13 +300,13 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_REFUND_DEPOSIT_SALES_BY_CASH") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                        DBClass.AddSimpleParameter(cmd, "@DepositSalesId", depositSalesId);
-                        DBClass.AddSimpleParameter(cmd, "@Nominal", nominal);
-                        DBClass.AddSimpleParameter(cmd, "@Note", note);
-                        DBClass.AddSimpleParameter(cmd, "@RefundDate", refundDate);
-                        DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_REFUND_DEPOSIT_SALES_BY_CASH");
+                        cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                        cmd.Parameters.AddWithValue("@DepositSalesId", depositSalesId);
+                        cmd.Parameters.AddWithValue("@Nominal", nominal);
+                        cmd.Parameters.AddWithValue("@Note", note);
+                        cmd.Parameters.AddWithValue("@RefundDate", refundDate);
+                        cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -327,13 +327,13 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_REFUND_DEPOSIT_SALES_BY_BANK") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@BankAccountId", bankAccountId);
-                        DBClass.AddSimpleParameter(cmd, "@DepositSalesId", depositSalesId);
-                        DBClass.AddSimpleParameter(cmd, "@Nominal", nominal);
-                        DBClass.AddSimpleParameter(cmd, "@Note", note);
-                        DBClass.AddSimpleParameter(cmd, "@RefundDate", refundDate);
-                        DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_REFUND_DEPOSIT_SALES_BY_BANK");
+                        cmd.Parameters.AddWithValue("@BankAccountId", bankAccountId);
+                        cmd.Parameters.AddWithValue("@DepositSalesId", depositSalesId);
+                        cmd.Parameters.AddWithValue("@Nominal", nominal);
+                        cmd.Parameters.AddWithValue("@Note", note);
+                        cmd.Parameters.AddWithValue("@RefundDate", refundDate);
+                        cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -351,9 +351,9 @@ namespace Repository
             DataSet[] dataSetArray = new DataSet[1];
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_DEPOSIT_SALES_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepositSalesId", depositSalesId);
-                DBClass.AddSimpleParameter(cmd, "@InWords", inWords);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_DEPOSIT_SALES_DATA");
+                cmd.Parameters.AddWithValue("@DepositSalesId", depositSalesId);
+                cmd.Parameters.AddWithValue("@InWords", inWords);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 DataSet dataSetResult  = new DataSet();
                 adapter.Fill(dataSetResult, "DepositSales");
@@ -368,7 +368,7 @@ namespace Repository
             string VoucherCode = "DPS/" + outletId + "/" + DateTime.Now.Year + "/" + StringManipulation.ChangeToRomeNumber(DateTime.Now.Month) + "/";
             using (DBClass     = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("GETDEPOSITSALESCODENUMBER") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("GETDEPOSITSALESCODENUMBER");
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {

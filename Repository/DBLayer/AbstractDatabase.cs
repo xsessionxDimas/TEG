@@ -4,26 +4,28 @@ using System.Data.Common;
 
 namespace Repository.DBClass
 {
-    public abstract class AbstractDatabase : IDisposable
+    public abstract class AbstractDatabase<CONNECTION_TYPE, COMMAND_TYPE, ADAPTER_TYPE> : IDisposable
+        where CONNECTION_TYPE : DbConnection, new()
+        where COMMAND_TYPE    : DbCommand
+        where ADAPTER_TYPE    : DbDataAdapter, new()
     {
         #region : Connection :
 
         /// <summary>Gets the Connection object associated with the current instance.</summary>
-        public DbConnection Connection
+        public CONNECTION_TYPE Connection
         {
             get
             {
                 if (internal_currentConnection == null)
                 {
-                    internal_currentConnection = providerFactory.CreateConnection();
+                    internal_currentConnection = new CONNECTION_TYPE();
                     internal_currentConnection.ConnectionString = GetConnectionString();
                 }
                 return internal_currentConnection;
             }
         }
 
-        private DbProviderFactory providerFactory;
-        private DbConnection internal_currentConnection;
+        private CONNECTION_TYPE internal_currentConnection;
 
         /// <summary>When overridden in derived classes returns the connection string for the database.</summary>
         /// <returns>The connection string for the database.</returns>
@@ -36,14 +38,14 @@ namespace Repository.DBClass
         /// <summary>Gets a DbCommand object with the specified <see cref="DbCommand.CommandText"/>.</summary>
         /// <param name="sqlString">The SQL string.</param>
         /// <returns>A DbCommand object with the specified <see cref="DbCommand.CommandText"/>.</returns>
-        public DbCommand GetSqlStringCommand(string sqlString)
+        public COMMAND_TYPE GetSqlStringCommand(string sqlString)
         {
             if (Connection.State != ConnectionState.Open)
                 Connection.Open();
 
-            DbCommand cmd   = Connection.CreateCommand();
-            cmd.CommandType = CommandType.Text;
-            cmd.CommandText = sqlString;
+            COMMAND_TYPE cmd = Connection.CreateCommand() as COMMAND_TYPE;
+            cmd.CommandType  = CommandType.Text;
+            cmd.CommandText  = sqlString;
             return cmd;
         }
 
@@ -51,7 +53,7 @@ namespace Repository.DBClass
         /// <param name="sqlStringFormat">The SQL string format.</param>
         /// <param name="args">The format arguments.</param>
         /// <returns>A DbCommand object with the specified <see cref="DbCommand.CommandText"/>.</returns>
-        public DbCommand GetSqlStringCommand(string sqlStringFormat, params object[] args)
+        public COMMAND_TYPE GetSqlStringCommand(string sqlStringFormat, params object[] args)
         {
             return GetSqlStringCommand(string.Format(sqlStringFormat, args));
         }
@@ -59,12 +61,12 @@ namespace Repository.DBClass
         /// <summary>Gets a DbCommand object for the specified Stored Procedure.</summary>
         /// <param name="storedProcName">The name of the stored procedure.</param>
         /// <returns>A DbCommand object for the specified Stored Procedure.</returns>
-        public DbCommand GetStoredProcedureCommand(string storedProcName)
+        public COMMAND_TYPE GetStoredProcedureCommand(string storedProcName)
         {
             if (Connection.State != ConnectionState.Open)
                 Connection.Open();
 
-            DbCommand cmd   = Connection.CreateCommand();
+            COMMAND_TYPE cmd = this.Connection.CreateCommand() as COMMAND_TYPE;
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.CommandText = storedProcName;
             return cmd;
@@ -121,11 +123,11 @@ namespace Repository.DBClass
                                             ParameterDirection direction,
                                             object value)
         {
-            DbParameter param   = cmd.CreateParameter();
-            param.DbType        = paramType;
+            DbParameter param = cmd.CreateParameter();
+            param.DbType = paramType;
             param.ParameterName = paramName;
-            param.Value         = value;
-            param.Direction     = direction;
+            param.Value = value;
+            param.Direction = direction;
             cmd.Parameters.Add(param);
             return param;
         }
@@ -149,15 +151,6 @@ namespace Repository.DBClass
             return param;
         }
 
-        public void AddSimpleParameter(DbCommand cmd, String paramName, Object paramValue)
-        {
-            DbParameter param = cmd.CreateParameter();
-            param.ParameterName = paramName;
-            param.Value = paramValue;
-
-            cmd.Parameters.Add(param);
-        }
-
         #endregion
 
         #region : Executes :
@@ -165,7 +158,7 @@ namespace Repository.DBClass
         /// <summary>Executes the specified command against the current connection.</summary>
         /// <param name="cmd">The command to be executed.</param>
         /// <returns>Result returned by the database engine.</returns>
-        public int ExecuteNonQuery(DbCommand cmd)
+        public int ExecuteNonQuery(COMMAND_TYPE cmd)
         {
             if (Connection.State != ConnectionState.Open)
                 Connection.Open();
@@ -177,7 +170,7 @@ namespace Repository.DBClass
         /// <param name="cmd">The command to be executed.</param>
         /// <param name="txn">The database transaction inside which the command should be executed.</param>
         /// <returns>Result returned by the database engine.</returns>
-        public int ExecuteNonQuery(DbCommand cmd, DbTransaction txn)
+        public int ExecuteNonQuery(COMMAND_TYPE cmd, DbTransaction txn)
         {
             if (Connection.State != ConnectionState.Open)
                 Connection.Open();
@@ -189,11 +182,10 @@ namespace Repository.DBClass
         /// <summary>Executes the specified command against the current connection.</summary>
         /// <param name="cmd">The command to be executed.</param>
         /// <returns>Result returned by the database engine.</returns>
-        public DbDataReader ExecuteReader(DbCommand cmd)
+        public DbDataReader ExecuteReader(COMMAND_TYPE cmd)
         {
             if (Connection.State != ConnectionState.Open)
                 Connection.Open();
-
             return cmd.ExecuteReader();
         }
 
@@ -203,8 +195,8 @@ namespace Repository.DBClass
         /// <returns>Result returned by the database engine.</returns>
         public DbDataReader ExecuteReader(DbCommand cmd, CommandBehavior behavior)
         {
-            if (Connection.State != ConnectionState.Open)
-                Connection.Open();
+            if (this.Connection.State != ConnectionState.Open)
+                this.Connection.Open();
 
             return cmd.ExecuteReader(behavior);
         }
@@ -212,16 +204,16 @@ namespace Repository.DBClass
         /// <summary>Executes the specified command against the current connection.</summary>
         /// <param name="cmd">The command to be executed.</param>
         /// <returns>Result returned by the database engine.</returns>
-        public T ExecuteScalar<T>(DbCommand cmd)
+        public T ExecuteScalar<T>(DbCommand cmd, T defaultValue)
         {
-            if (Connection.State != ConnectionState.Open)
-                Connection.Open();
+            if (this.Connection.State != ConnectionState.Open)
+                this.Connection.Open();
 
             object retVal = cmd.ExecuteScalar();
             if (null == retVal || DBNull.Value == retVal)
-                return default(T);
-
-            return (T)retVal;
+                return defaultValue;
+            else
+                return (T)retVal;
         }
 
         /// <summary>Executes the specified command against the current connection.</summary>
@@ -229,10 +221,10 @@ namespace Repository.DBClass
         /// <returns>Result returned by the database engine.</returns>
         public DataSet ExecuteDataSet(DbCommand cmd)
         {
-            DbDataAdapter adapter = providerFactory.CreateDataAdapter();
+            ADAPTER_TYPE adapter = new ADAPTER_TYPE();
             adapter.SelectCommand = cmd;
 
-            var retVal = new DataSet();
+            DataSet retVal = new DataSet();
             adapter.Fill(retVal);
             return retVal;
         }
@@ -245,18 +237,12 @@ namespace Repository.DBClass
         /// <returns>Created transaction.</returns>
         public DbTransaction BeginTransaction()
         {
-            if (Connection.State != ConnectionState.Open)
-                Connection.Open();
+            if (this.Connection.State != ConnectionState.Open)
+                this.Connection.Open();
             return Connection.BeginTransaction();
         }
 
         #region : Consturction / Destruction :
-
-        /// <summary>Initialize AbstractDatabase with ProviderFactory of choice.</summary>
-        protected AbstractDatabase(DbProviderFactory providerFactory)
-        {
-            this.providerFactory = providerFactory;
-        }
 
         /// <summary>Disposes the resources associated with the current database connection.</summary>
         ~AbstractDatabase()
@@ -279,5 +265,6 @@ namespace Repository.DBClass
         #endregion
 
         #endregion
+
     }
 }

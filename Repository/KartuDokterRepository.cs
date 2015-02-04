@@ -14,12 +14,12 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("KARTU_DOKTER_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@CustomerId", customerId);
-                DBClass.AddSimpleParameter(cmd, "@Month", month);
-                DBClass.AddSimpleParameter(cmd, "@Year", year);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("KARTU_DOKTER_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@CustomerId", customerId);
+                cmd.Parameters.AddWithValue("@Month", month);
+                cmd.Parameters.AddWithValue("@Year", year);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "KartuDokterHeader");
@@ -27,9 +27,9 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("KARTUDOKTER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@startingDate", startingDate);
-                DBClass.AddSimpleParameter(cmd, "@CustomerId", customerId);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("KARTUDOKTER");
+                cmd.Parameters.AddWithValue("@startingDate", startingDate);
+                cmd.Parameters.AddWithValue("@CustomerId", customerId);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "KartuDokter");
@@ -43,12 +43,12 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("KARTU_DOKTER_HEADER_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@CustomerId", customerId);
-                DBClass.AddSimpleParameter(cmd, "@Month", month);
-                DBClass.AddSimpleParameter(cmd, "@Year", year);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("KARTU_DOKTER_HEADER_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@CustomerId", customerId);
+                cmd.Parameters.AddWithValue("@Month", month);
+                cmd.Parameters.AddWithValue("@Year", year);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -56,9 +56,9 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("KARTUDOKTER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@startingDate", startingDate);
-                DBClass.AddSimpleParameter(cmd, "@CustomerId", customerId);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("KARTUDOKTER");
+                cmd.Parameters.AddWithValue("@startingDate", startingDate);
+                cmd.Parameters.AddWithValue("@CustomerId", customerId);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 var table              = new DataTable();
                 adapter.Fill(table);

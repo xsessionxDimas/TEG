@@ -19,9 +19,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCT") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCT");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -37,9 +37,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PRODUCT") as SqlCommand;
+                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PRODUCT");
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -57,9 +57,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCT") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@ProductId", id);
-                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCT");
+                        cmd.Parameters.AddWithValue("@ProductId", id);
+                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -77,7 +77,7 @@ namespace Repository
             var result     = new List<Product>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCT") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCT");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -104,8 +104,8 @@ namespace Repository
             var result     = new Dictionary<string, Dictionary<string, string>>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCT_WITH_SPESIFIC_PRICE") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@CustomerStatusType", custStatusType);
+                SqlCommand cmd  = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCT_WITH_SPESIFIC_PRICE");
+                cmd.Parameters.AddWithValue("@CustomerStatusType", custStatusType);
                 var reader      = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -125,8 +125,8 @@ namespace Repository
             var product    = new Product();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCT_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@ProductId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCT_BY_ID");
+                cmd.Parameters.AddWithValue("@ProductId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -152,7 +152,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_PRODUCT_NAME_AVAILABLE") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_PRODUCT_NAME_AVAILABLE");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -168,7 +168,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_PRODUCT_NAME_AVAILABLE2") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_PRODUCT_NAME_AVAILABLE2");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -196,8 +196,8 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("GETPRODUCTNEWCODENUMBER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@CategoryId", categoryID);
+                SqlCommand cmd  = DBClass.GetStoredProcedureCommand("GETPRODUCTNEWCODENUMBER");
+                cmd.Parameters.AddWithValue("@CategoryId", categoryID);
                 var reader      = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -213,8 +213,8 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRICELIST_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_PRICELIST_HEADER");
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "FlowHeader");
@@ -222,7 +222,7 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCT_PRICELIST") as SqlCommand;
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCT_PRICELIST");
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "PriceList");
@@ -236,7 +236,7 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCT_PRICELIST") as SqlCommand;
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCT_PRICELIST");
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 var table = new DataTable();
                 adapter.Fill(table);

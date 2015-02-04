@@ -18,9 +18,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_DEPARTEMENT") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_DEPARTEMENT");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                 var reader      = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -36,9 +36,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_DEPARTEMENT") as SqlCommand;
+                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_DEPARTEMENT");
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_DEPARTEMENT") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@DepartementId", id);
-                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_DEPARTEMENT");
+                        cmd.Parameters.AddWithValue("@DepartementId", id);
+                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -76,7 +76,7 @@ namespace Repository
             var result       = new List<Departement>();
             using (DBClass   = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -103,8 +103,8 @@ namespace Repository
             var departement = new Departement();
             using (DBClass  = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPARTEMENT_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_DEPARTEMENT_BY_ID");
+                cmd.Parameters.AddWithValue("@DepartementId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -134,7 +134,7 @@ namespace Repository
             var result     = new List<Departement>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -153,7 +153,7 @@ namespace Repository
             var result       = new List<Departement>();
             using (DBClass   = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_WAREHOUSE") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_WAREHOUSE");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -172,7 +172,7 @@ namespace Repository
             var result       = new List<Departement>();
             using (DBClass   = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_OUTLET") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_OUTLET");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -191,7 +191,7 @@ namespace Repository
             var result     = new List<Departement>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_SUPERVISOR") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_SUPERVISOR");
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -209,7 +209,7 @@ namespace Repository
             var result     = new List<Departement>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT_EXCEPT_SUPERVISOR") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT_EXCEPT_SUPERVISOR");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -228,7 +228,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_DEPARTEMENT_NAME_AVAILABLE") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_DEPARTEMENT_NAME_AVAILABLE");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -244,7 +244,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_DEPARTEMENT_NAME_AVAILABLE2") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_DEPARTEMENT_NAME_AVAILABLE2");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

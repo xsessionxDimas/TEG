@@ -14,28 +14,28 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
-                var adapter     = new SqlDataAdapter(cmd);
-                dataSetResult   = new DataSet();
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "SalesHeader");
-                dataSetArray[0] = dataSetResult;
+                dataSetArray[0]        = dataSetResult;
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd         = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_ITEM_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@ProductId", productId);
-                DBClass.AddSimpleParameter(cmd, "@ByPassProduct", productId == 0 ? 1 : 0);
-                var adapter     = new SqlDataAdapter(cmd);
-                dataSetResult   = new DataSet();
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_ITEM_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                cmd.Parameters.AddWithValue("@ByPassProduct", productId == 0 ? 1 : 0);
+                SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
+                dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "SalesByItem");
-                dataSetArray[1] = dataSetResult;
+                dataSetArray[1]         = dataSetResult;
             }
             return dataSetArray;
         }
@@ -46,24 +46,24 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
-                var adapter     = new SqlDataAdapter(cmd);
-                dataSetResult   = new DataSet();
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                dataSetResult = new DataSet();
                 adapter.Fill(dataSetResult, "SalesHeader");
                 dataSetArray[0] = dataSetResult;
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd         = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                var adapter     = new SqlDataAdapter(cmd);
-                dataSetResult   = new DataSet();
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                dataSetResult = new DataSet();
                 adapter.Fill(dataSetResult, "SalesByOutlet");
                 dataSetArray[1] = dataSetResult;
             }
@@ -76,56 +76,56 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
-                var adapter     = new SqlDataAdapter(cmd);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult   = new DataSet();
                 adapter.Fill(dataSetResult, "SalesHeader");
                 dataSetArray[0] = dataSetResult;
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd         = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_MARKETING") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@MarketingId", marketingId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                var adapter     = new SqlDataAdapter(cmd);
-                dataSetResult   = new DataSet();
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_MARKETING");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@MarketingId", marketingId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "SalesByMarketing");
-                dataSetArray[1] = dataSetResult;
+                dataSetArray[1]        = dataSetResult;
             }
             return dataSetArray;
         }
 
         public DataSet GetSalesByMarketingForExcell(int departementId, int marketingId, DateTime printDate, DateTime dateStart, DateTime dateEnd)
         {
-            var dataSetResult = new DataSet();
+            DataSet dataSetResult = new DataSet();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_MARKETING_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@MarketingId", marketingId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
-                var adapter = new SqlDataAdapter(cmd);
-                var table   = new DataTable();
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_MARKETING_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@MarketingId", marketingId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
+                var table               = new DataTable();
                 adapter.Fill(table);
                 dataSetResult.Tables.Add(table);
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_MARKETING_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@MarketingId", marketingId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                var adapter = new SqlDataAdapter(cmd);
-                var table   = new DataTable();
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_MARKETING_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@MarketingId", marketingId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                var table              = new DataTable();
                 adapter.Fill(table);
                 dataSetResult.Tables.Add(table);
             }
@@ -134,27 +134,27 @@ namespace Repository
 
         public DataSet GetSalesByOutletForExcell(int departementId, DateTime printDate, DateTime dateStart, DateTime dateEnd)
         {
-            var dataSetResult = new DataSet();
-            using (DBClass    = new MSSQLDatabase())
+            DataSet dataSetResult = new DataSet();
+            using (DBClass        = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_OUTLET_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
-                var adapter = new SqlDataAdapter(cmd);
-                var table   = new DataTable();
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_OUTLET_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
+                var table               = new DataTable();
                 adapter.Fill(table);
                 dataSetResult.Tables.Add(table);
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                var adapter = new SqlDataAdapter(cmd);
-                var table   = new DataTable();
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_OUTLET_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
+                var table               = new DataTable();
                 adapter.Fill(table);
                 dataSetResult.Tables.Add(table);
             }
@@ -163,11 +163,11 @@ namespace Repository
             {
                 using (DBClass = new MSSQLDatabase())
                 {
-                    var cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_INVOICE_ITEM_AND_PRESENT_DATA") as SqlCommand;
-                    DBClass.AddSimpleParameter(cmd, "@InvoiceId", dataRow[0]);
-                    var adapter     = new SqlDataAdapter(cmd);
-                    var table       = new DataTable();
-                    table.TableName = "INVOICE-" + dataRow[0];
+                    SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_INVOICE_ITEM_AND_PRESENT_DATA");
+                    cmd.Parameters.AddWithValue("@InvoiceId", dataRow[0]);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    var table              = new DataTable();
+                    table.TableName        = "INVOICE-" + dataRow[0];
                     adapter.Fill(table);
                     dataSetResult.Tables.Add(table);
                 }
@@ -177,29 +177,29 @@ namespace Repository
 
         public DataSet GetSalesByProductForExcell(int departementId, int productId, DateTime printDate, DateTime dateStart, DateTime dateEnd)
         {
-            var dataSetResult = new DataSet();
-            using (DBClass    = new MSSQLDatabase())
+            DataSet dataSetResult = new DataSet();
+            using (DBClass        = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_OUTLET_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
-                var adapter = new SqlDataAdapter(cmd);
-                var table   = new DataTable();
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_SALES_BY_OUTLET_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
+                SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
+                var table               = new DataTable();
                 adapter.Fill(table);
                 dataSetResult.Tables.Add(table);
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd     = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_ITEM_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@ProductId", productId);
-                DBClass.AddSimpleParameter(cmd, "@ByPassProduct", productId == 0 ? 1 : 0);
-                var adapter = new SqlDataAdapter(cmd);
-                var table   = new DataTable();
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_ITEM_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                cmd.Parameters.AddWithValue("@ByPassProduct", productId == 0 ? 1 : 0);
+                SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
+                var table               = new DataTable();
                 adapter.Fill(table);
                 dataSetResult.Tables.Add(table);
             }
@@ -208,13 +208,13 @@ namespace Repository
             {
                 using (DBClass = new MSSQLDatabase())
                 {
-                    var cmd         = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_ITEM_DATA_EXCELL") as SqlCommand;
-                    DBClass.AddSimpleParameter(cmd, "@ProductId", dataRow[0]);
-                    DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                    DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                    var adapter     = new SqlDataAdapter(cmd);
-                    var table       = new DataTable();
-                    table.TableName = "PRODUCT-" + dataRow[0];
+                    SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_SALES_BY_ITEM_DATA_EXCELL");
+                    cmd.Parameters.AddWithValue("@ProductId", dataRow[0]);
+                    cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                    cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    var table              = new DataTable();
+                    table.TableName        = "PRODUCT-" + dataRow[0];
                     adapter.Fill(table);
                     dataSetResult.Tables.Add(table);
                 }

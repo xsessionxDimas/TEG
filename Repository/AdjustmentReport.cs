@@ -14,11 +14,11 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_ADJUSTMENT_REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_ADJUSTMENT_REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "AdjustmentHeader");
@@ -26,10 +26,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_CASH_ADJUSTMENT_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@CashId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_CASH_ADJUSTMENT_DATA");
+                cmd.Parameters.AddWithValue("@CashId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "AdjustmentList");
@@ -44,11 +44,11 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_BANKADJUSTMENT_REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@BankAccountId", cashBankId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_BANKADJUSTMENT_REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@BankAccountId", cashBankId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "AdjustmentHeader");
@@ -56,10 +56,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_BANK_ADJUSTMENT_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@BankAccountId", cashBankId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_BANK_ADJUSTMENT_DATA");
+                cmd.Parameters.AddWithValue("@BankAccountId", cashBankId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "AdjustmentList");
@@ -74,11 +74,11 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_ADJUSTMENT_REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_ADJUSTMENT_REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "AdjustmentHeader");
@@ -86,10 +86,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_STOCK_ADJUSTMENT_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_STOCK_ADJUSTMENT_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "AdjustmentList");

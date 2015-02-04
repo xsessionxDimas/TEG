@@ -18,9 +18,9 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_STOCK_REPACKAGE") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_STOCK_REPACKAGE");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -36,9 +36,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_STOCK_REPACKAGE") as SqlCommand;
+                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_STOCK_REPACKAGE");
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction) DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_STOCK_REPACKAGE") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@RepackageId", id);
-                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_STOCK_REPACKAGE");
+                        cmd.Parameters.AddWithValue("@RepackageId", id);
+                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -76,7 +76,7 @@ namespace Repository
             var result     = new List<Repackage>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_REPACKAGE") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_REPACKAGE");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -101,8 +101,8 @@ namespace Repository
             var repackage  = new Repackage();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_STOCK_REPACKAGE_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@RepackageId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_STOCK_REPACKAGE_BY_ID");
+                cmd.Parameters.AddWithValue("@RepackageId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -126,7 +126,7 @@ namespace Repository
             string ProformaCode = "RPK/" + DateTime.Now.Year + "/" + StringManipulation.ChangeToRomeNumber(DateTime.Now.Month) + "/";
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("GETREPACKAGINGCODENUMBER") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("GETREPACKAGINGCODENUMBER");
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {

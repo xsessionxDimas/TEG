@@ -18,9 +18,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCT_CATEGORY") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCT_CATEGORY");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -36,9 +36,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PRODUCT_CATEGORY") as SqlCommand;
+                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PRODUCT_CATEGORY");
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCT_CATEGORY") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@CategoryId", id);
-                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCT_CATEGORY");
+                        cmd.Parameters.AddWithValue("@CategoryId", id);
+                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -76,7 +76,7 @@ namespace Repository
             var result     = new List<ProductCategory>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCT_CATEGORY") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCT_CATEGORY");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -96,8 +96,8 @@ namespace Repository
             var category = new ProductCategory();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCT_CATEGORY_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@CategoryId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCT_CATEGORY_BY_ID");
+                cmd.Parameters.AddWithValue("@CategoryId", id);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -114,7 +114,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_PRODUCT_CATEGORY_NAME_AVAILABLE") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_PRODUCT_CATEGORY_NAME_AVAILABLE");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -130,7 +130,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_PRODUCT_CATEGORY_NAME_AVAILABLE2") as SqlCommand;
+                var cmd = DBClass.GetStoredProcedureCommand("APP_PRODUCT_CATEGORY_NAME_AVAILABLE2");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

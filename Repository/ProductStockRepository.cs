@@ -19,9 +19,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCT_STOCK") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCT_STOCK");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", createdBy);
+                cmd.Parameters.AddWithValue("@LastUpdatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -37,9 +37,9 @@ namespace Repository
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_STOCK") as SqlCommand;
+                    SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_STOCK");
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -58,7 +58,7 @@ namespace Repository
             var result = new List<ProductStock>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -82,7 +82,7 @@ namespace Repository
             var result     = new List<ProductStock>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_WITH_NORMAL_STOCK") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_WITH_NORMAL_STOCK");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -107,7 +107,7 @@ namespace Repository
             var result     = new List<ProductStock>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT_STOCK") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_DEPARTEMENT_STOCK");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -128,8 +128,8 @@ namespace Repository
             var stock      = new ProductStock();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_STOCK_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@StockId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_STOCK_BY_ID");
+                cmd.Parameters.AddWithValue("@StockId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -149,7 +149,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_PRODUCT_STOCK_AVAILABLE") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_PRODUCT_STOCK_AVAILABLE");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -165,7 +165,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_PRODUCT_STOCK_AVAILABLE2") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_PRODUCT_STOCK_AVAILABLE2");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -181,7 +181,7 @@ namespace Repository
             var result     = new List<ProductStock>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_MINIMUM_ALERT") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_STOCK_MINIMUM_ALERT");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -204,9 +204,9 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "FlowHeader");
@@ -214,11 +214,11 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@ProductId", productId);
-                DBClass.AddSimpleParameter(cmd, "@ByPassProduct", productId == 0 ? 1 : 0);
-                DBClass.AddSimpleParameter(cmd, "@Date", date);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                cmd.Parameters.AddWithValue("@ByPassProduct", productId == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@Date", date);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "ProductStock");
@@ -232,9 +232,9 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_HEADER_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_HEADER_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 var table              = new DataTable();
                 adapter.Fill(table);
@@ -243,11 +243,11 @@ namespace Repository
 
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@ProductId", productId);
-                DBClass.AddSimpleParameter(cmd, "@ByPassProduct", productId == 0 ? 1 : 0);
-                DBClass.AddSimpleParameter(cmd, "@Date", date);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_PRODUCT_STOCK_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                cmd.Parameters.AddWithValue("@ByPassProduct", productId == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@Date", date);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 var table              = new DataTable();
                 adapter.Fill(table);

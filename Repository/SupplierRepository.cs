@@ -11,17 +11,17 @@ using Repository.tools;
 
 namespace Repository
 {
-    public class SupplierRepository : RepositoryBase, IUniqueValidation, IRepository<Supplier>
+    public class SupplierRepository<T> : RepositoryBase, IUniqueValidation, IRepository<T> where T : BaseEntityObject
     {
-        public int SaveRow(Supplier param, string createdBy)
+        public int SaveRow(T param, string createdBy)
         {
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_SUPPLIER") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_SUPPLIER");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
-                var reader = DBClass.ExecuteReader(cmd);
+                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
+                var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
                     objID = int.Parse(reader[0].ToString());
@@ -30,15 +30,15 @@ namespace Repository
             return objID;
         }
 
-        public int UpdateRow(Supplier param, string updatedBy)
+        public int UpdateRow(T param, string updatedBy)
         {
             using (DBClass = new MSSQLDatabase())
             {
                 using (DbTransaction txn = DBClass.BeginTransaction())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_SUPPLIER") as SqlCommand;
+                    SqlCommand cmd       = DBClass.GetStoredProcedureCommand("APP_UPDATE_SUPPLIER");
                     RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Update);
-                    DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                    cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                     DBClass.ExecuteNonQuery(cmd, txn);
                     txn.Commit();
                 }
@@ -56,9 +56,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_SUPPLIER") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@DepartementId", id);
-                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_SUPPLIER");
+                        cmd.Parameters.AddWithValue("@DepartementId", id);
+                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -71,12 +71,12 @@ namespace Repository
             return result;
         }
 
-        public IEnumerable<Supplier> FindAll(List<Dictionary<string, object>> keyValueParam)
+        public IEnumerable<T> FindAll(List<Dictionary<string, object>> keyValueParam)
         {
             var result     = new List<Supplier>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_SUPPLIER") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_SUPPLIER");
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -90,16 +90,16 @@ namespace Repository
                     result.Add(suplier);
                 }
             }
-            return result;
+            return result as List<T>;
         }
 
-        public Supplier FindbyId(int id)
+        public T FindbyId(int id)
         {
             var suplier    = new Supplier();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_SUPPLIER_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@SupplierId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_SUPPLIER_BY_ID");
+                cmd.Parameters.AddWithValue("@SupplierId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -111,7 +111,7 @@ namespace Repository
                     suplier.Active       = bool.Parse(reader[5].ToString());
                 }
             }
-            return suplier;
+            return suplier as T;
         }
 
         public bool UniqueNameAvailable(List<Dictionary<string, object>> keyValueParam)
@@ -119,7 +119,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_SUPPLIER_NAME_AVAILABLE") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_SUPPLIER_NAME_AVAILABLE");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -135,7 +135,7 @@ namespace Repository
             var result     = false;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd    = DBClass.GetStoredProcedureCommand("APP_SUPPLIER_NAME_AVAILABLE2") as SqlCommand;
+                var cmd    = DBClass.GetStoredProcedureCommand("APP_SUPPLIER_NAME_AVAILABLE2");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

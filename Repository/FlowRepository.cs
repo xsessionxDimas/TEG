@@ -14,12 +14,12 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@CashId", cashId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@CashId", cashId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "FlowHeader");
@@ -27,10 +27,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "FlowDetail");
@@ -45,12 +45,12 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@BankAccountId", cashBankId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@BankAccountId", cashBankId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult          = new DataSet();
                 adapter.Fill(dataSetResult, "BankFlowHeader");
@@ -58,11 +58,11 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@BankAccountId", cashBankId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@BankAccountId", cashBankId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "FlowDetail");
@@ -77,11 +77,11 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "FlowHeader");
@@ -89,12 +89,12 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@ProductId", productId);
-                DBClass.AddSimpleParameter(cmd, "@ByPassProduct", productId == 0 ? 1 : 0);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_DATA");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                cmd.Parameters.AddWithValue("@ByPassProduct", productId == 0 ? 1 : 0);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "StockFlowData");
@@ -109,11 +109,11 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult = new DataSet();
                 adapter.Fill(dataSetResult, "FlowHeader");
@@ -121,10 +121,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_ALL_MONEY") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_ALL_MONEY");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 dataSetResult = new DataSet();
                 adapter.Fill(dataSetResult, "MoneyFlow");
@@ -138,12 +138,12 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_HEADER_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@CashId", cashId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_HEADER_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@CashId", cashId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -151,10 +151,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_DATA_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_CASHFLOW_REPORT_DATA_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -168,12 +168,12 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_HEADER_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@BankAccountId", cashBankId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_HEADER_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@BankAccountId", cashBankId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -181,11 +181,11 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_DATA_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@BankAccountId", cashBankId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_BANKFLOW_REPORT_DATA_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@BankAccountId", cashBankId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -199,11 +199,11 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass        = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_HEADER_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_HEADER_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -211,12 +211,12 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_ITEM_EXCELL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@ProductId", productId);
-                DBClass.AddSimpleParameter(cmd, "@ByPassProduct", productId == 0 ? 1 : 0);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_ITEM_EXCELL");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@ProductId", productId);
+                cmd.Parameters.AddWithValue("@ByPassProduct", productId == 0 ? 1 : 0);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 var table               = new DataTable();
                 adapter.Fill(table);
@@ -227,10 +227,10 @@ namespace Repository
             {
                 using (DBClass = new MSSQLDatabase())
                 {
-                    var cmd = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_DATA_EXCELL") as SqlCommand;
-                    DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                    DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                    DBClass.AddSimpleParameter(cmd, "@StockId", dataRow[0]);
+                    SqlCommand cmd         = DBClass.GetStoredProcedureCommand("REPORT_STOCKFLOW_REPORT_DATA_EXCELL");
+                    cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                    cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                    cmd.Parameters.AddWithValue("@StockId", dataRow[0]);
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     var table              = new DataTable();
                     table.TableName        = "STOCK-" + dataRow[0];
@@ -246,11 +246,11 @@ namespace Repository
             DataSet dataSetResult = new DataSet();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_HEADER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
-                DBClass.AddSimpleParameter(cmd, "@PrintDate", printDate);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_HEADER");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
+                cmd.Parameters.AddWithValue("@PrintDate", printDate);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 var table = new DataTable();
                 adapter.Fill(table);
@@ -258,10 +258,10 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_ALL_MONEY") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", departementId);
-                DBClass.AddSimpleParameter(cmd, "@DateStart", dateStart);
-                DBClass.AddSimpleParameter(cmd, "@DateEnd", dateEnd);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("REPORT_ALL_MONEY");
+                cmd.Parameters.AddWithValue("@DepartementId", departementId);
+                cmd.Parameters.AddWithValue("@DateStart", dateStart);
+                cmd.Parameters.AddWithValue("@DateEnd", dateEnd);
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 var table = new DataTable();
                 adapter.Fill(table);

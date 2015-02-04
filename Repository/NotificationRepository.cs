@@ -17,7 +17,7 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NOTIFICATION") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NOTIFICATION");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -43,7 +43,7 @@ namespace Repository
             var result     = new List<Notification>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_NOTIFICATIONS") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_NOTIFICATIONS");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())

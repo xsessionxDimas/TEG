@@ -1,11 +1,9 @@
-﻿using System.Data.Common;
+﻿using System.Data.SqlClient;
 
 namespace Repository.DBClass
 {
-    public class MSSQLDatabase : AbstractDatabase
+    public class MSSQLDatabase : AbstractDatabase<SqlConnection, SqlCommand, SqlDataAdapter>
     {
-        public MSSQLDatabase() : base(DbProviderFactories.GetFactory("System.Data.SqlClient")) { }
-
         protected override string GetConnectionString()
         {
             return System.Configuration.ConfigurationManager.ConnectionStrings["TamanEdenApp"].ConnectionString;

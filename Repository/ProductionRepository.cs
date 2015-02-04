@@ -19,9 +19,9 @@ namespace Repository
             int objID      = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCTION") as SqlCommand;
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCTION");
                 RoutinesParameterSetter.Set(ref cmd, param, CRUDType.Insert);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", createdBy);
+                cmd.Parameters.AddWithValue("@CreatedBy", createdBy);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -59,11 +59,11 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCTION_MATERIAL") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@ProductionId", id);
-                        DBClass.AddSimpleParameter(cmd, "@ProductId", composite.ProductID);
-                        DBClass.AddSimpleParameter(cmd, "@Qty", composite.Qty);
-                        DBClass.AddSimpleParameter(cmd, "@Type", composite.CompositeType);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCTION_MATERIAL");
+                        cmd.Parameters.AddWithValue("@ProductionId", id);
+                        cmd.Parameters.AddWithValue("@ProductId", composite.ProductID);
+                        cmd.Parameters.AddWithValue("@Qty", composite.Qty);
+                        cmd.Parameters.AddWithValue("@Type", composite.CompositeType);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -84,10 +84,10 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCTION_OUTPUT") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@ProductionId", id);
-                        DBClass.AddSimpleParameter(cmd, "@ProductId", result.ProductID);
-                        DBClass.AddSimpleParameter(cmd, "@Qty", result.Qty);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_SAVE_NEW_PRODUCTION_OUTPUT");
+                        cmd.Parameters.AddWithValue("@ProductionId", id);
+                        cmd.Parameters.AddWithValue("@ProductId", result.ProductID);
+                        cmd.Parameters.AddWithValue("@Qty", result.Qty);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -106,16 +106,16 @@ namespace Repository
             int objID = 0;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_STOCKFLOW") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", obj.DepartementID);
-                DBClass.AddSimpleParameter(cmd, "@ProductId", obj.ProductID);
-                DBClass.AddSimpleParameter(cmd, "@Description", obj.Description);
-                DBClass.AddSimpleParameter(cmd, "@ProductionVoucher", obj.ProductionVoucher);
-                DBClass.AddSimpleParameter(cmd, "@Deposit", obj.Deposit);
-                DBClass.AddSimpleParameter(cmd, "@Withdraw", obj.Withdraw);
-                DBClass.AddSimpleParameter(cmd, "@Note", obj.Note);
-                DBClass.AddSimpleParameter(cmd, "@CreatedBy", obj.CreatedBy);
-                DBClass.AddSimpleParameter(cmd, "@CreatedDate", obj.CreatedDate);
+                var cmd = DBClass.GetStoredProcedureCommand("SAVE_NEW_STOCKFLOW");
+                cmd.Parameters.AddWithValue("@DepartementId", obj.DepartementID);
+                cmd.Parameters.AddWithValue("@ProductId", obj.ProductID);
+                cmd.Parameters.AddWithValue("@Description", obj.Description);
+                cmd.Parameters.AddWithValue("@ProductionVoucher", obj.ProductionVoucher);
+                cmd.Parameters.AddWithValue("@Deposit", obj.Deposit);
+                cmd.Parameters.AddWithValue("@Withdraw", obj.Withdraw);
+                cmd.Parameters.AddWithValue("@Note", obj.Note);
+                cmd.Parameters.AddWithValue("@CreatedBy", obj.CreatedBy);
+                cmd.Parameters.AddWithValue("@CreatedDate", obj.CreatedDate);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -136,10 +136,10 @@ namespace Repository
                 {
                     try
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_STOCKFLOW") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@ProductId", obj.ProductID);
-                        DBClass.AddSimpleParameter(cmd, "@DepartementId", obj.DepartementID);
-                        DBClass.AddSimpleParameter(cmd, "@ProductionVoucher", obj.ProductionVoucher);
+                        var cmd = DBClass.GetStoredProcedureCommand("DELETE_STOCKFLOW");
+                        cmd.Parameters.AddWithValue("@ProductId", obj.ProductID);
+                        cmd.Parameters.AddWithValue("@DepartementId", obj.DepartementID);
+                        cmd.Parameters.AddWithValue("@ProductionVoucher", obj.ProductionVoucher);
                         var affectedRows = DBClass.ExecuteNonQuery(cmd, txn);
                         if (affectedRows == 0)
                             throw new Exception("Hapus log gagal");
@@ -160,13 +160,13 @@ namespace Repository
             var errorFlag  = default(int);
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PRODUCTION") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@VoucherCode", production.VoucherCode);
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", production.DepartementID);
-                DBClass.AddSimpleParameter(cmd, "@Note", production.Note);
-                DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
-                DBClass.AddSimpleParameter(cmd, "@ProductionDate", production.ProductionDate);
-                DBClass.AddSimpleParameter(cmd, "@ProductionId", production.ProductionID);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_UPDATE_PRODUCTION");
+                cmd.Parameters.AddWithValue("@VoucherCode", production.VoucherCode);
+                cmd.Parameters.AddWithValue("@DepartementId", production.DepartementID);
+                cmd.Parameters.AddWithValue("@Note", production.Note);
+                cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
+                cmd.Parameters.AddWithValue("@ProductionDate", production.ProductionDate);
+                cmd.Parameters.AddWithValue("@ProductionId", production.ProductionID);
                 try
                 {
                     DBClass.ExecuteNonQuery(cmd);
@@ -200,9 +200,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCTION") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@ProductionId", id);
-                        DBClass.AddSimpleParameter(cmd, "@LastUpdatedBy", updatedBy);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCTION");
+                        cmd.Parameters.AddWithValue("@ProductionId", id);
+                        cmd.Parameters.AddWithValue("@LastUpdatedBy", updatedBy);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -220,7 +220,7 @@ namespace Repository
             var result     = new List<Production>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCTION") as SqlCommand;
+                SqlCommand cmd  = DBClass.GetStoredProcedureCommand("APP_GET_ALL_PRODUCTION");
                 RoutinesParameterSetter.Set(ref cmd, keyValueParam);
                 var reader      = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
@@ -242,8 +242,8 @@ namespace Repository
             var result     = new List<Composite>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCTION_COMPOSITES") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@ProductionId", productionID);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCTION_COMPOSITES");
+                cmd.Parameters.AddWithValue("@ProductionId", productionID);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -274,8 +274,8 @@ namespace Repository
             var result     = new List<ProductionResult>();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCTION_OUTPUTS") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@ProductionId", productionID);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCTION_OUTPUTS");
+                cmd.Parameters.AddWithValue("@ProductionId", productionID);
                 var reader = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -306,8 +306,8 @@ namespace Repository
             var production  = new Production();
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCTION_BY_ID") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@ProductionId", id);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("APP_GET_PRODUCTION_BY_ID");
+                cmd.Parameters.AddWithValue("@ProductionId", id);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -327,8 +327,8 @@ namespace Repository
             DataSet dataSetResult;
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCTION_DATA") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@ProductionId", productionID);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCTION_DATA");
+                cmd.Parameters.AddWithValue("@ProductionId", productionID);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "Production");
@@ -336,8 +336,8 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCTION_MATERIAL") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@ProductionId", productionID);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCTION_MATERIAL");
+                cmd.Parameters.AddWithValue("@ProductionId", productionID);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "ProductionComposite");
@@ -345,8 +345,8 @@ namespace Repository
             }
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCTION_OUTPUT") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@ProductionId", productionID);
+                SqlCommand cmd          = DBClass.GetStoredProcedureCommand("REPORT_GET_PRODUCTION_OUTPUT");
+                cmd.Parameters.AddWithValue("@ProductionId", productionID);
                 SqlDataAdapter adapter  = new SqlDataAdapter(cmd);
                 dataSetResult           = new DataSet();
                 adapter.Fill(dataSetResult, "ProductionResult");
@@ -360,8 +360,8 @@ namespace Repository
             string voucherCode = "JBC/" + warehouseId + "/" + DateTime.Now.Year + "/" + StringManipulation.ChangeToRomeNumber(DateTime.Now.Month) + "/";
             using (DBClass = new MSSQLDatabase())
             {
-                var cmd = DBClass.GetStoredProcedureCommand("GETPRODUCTIONCODENUMBER") as SqlCommand;
-                DBClass.AddSimpleParameter(cmd, "@DepartementId", warehouseId);
+                SqlCommand cmd = DBClass.GetStoredProcedureCommand("GETPRODUCTIONCODENUMBER");
+                cmd.Parameters.AddWithValue("@DepartementId", warehouseId);
                 var reader     = DBClass.ExecuteReader(cmd);
                 while (reader.Read())
                 {
@@ -380,9 +380,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCTION_COMPOSITE_ITEM") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@ProductionId", productionID);
-                        DBClass.AddSimpleParameter(cmd, "@ProductId", productID);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCTION_COMPOSITE_ITEM");
+                        cmd.Parameters.AddWithValue("@ProductionId", productionID);
+                        cmd.Parameters.AddWithValue("@ProductId", productID);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
@@ -404,9 +404,9 @@ namespace Repository
                 {
                     using (var txn = (SqlTransaction)DBClass.BeginTransaction())
                     {
-                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCTION_OUTPUT_ITEM") as SqlCommand;
-                        DBClass.AddSimpleParameter(cmd, "@ProductionId", productionID);
-                        DBClass.AddSimpleParameter(cmd, "@ProductId", productID);
+                        var cmd = DBClass.GetStoredProcedureCommand("APP_DELETE_PRODUCTION_OUTPUT_ITEM");
+                        cmd.Parameters.AddWithValue("@ProductionId", productionID);
+                        cmd.Parameters.AddWithValue("@ProductId", productID);
                         DBClass.ExecuteNonQuery(cmd, txn);
                         txn.Commit();
                     }
